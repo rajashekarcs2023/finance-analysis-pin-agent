@@ -5,8 +5,8 @@ from langgraph.graph import StateGraph, END
 from langchain_openai import ChatOpenAI
 import functools
 
-from ..agents import create_search_agent, create_sec_agent, create_supervisor_agent
-from ..utils.helpers import agent_node
+from agents import create_search_agent, create_sec_agent, create_supervisor_agent
+from utils.helpers import agent_node
 
 class ResearchTeamState(TypedDict):
     """Define the state structure for the research team."""
