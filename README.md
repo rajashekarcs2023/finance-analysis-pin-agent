@@ -139,8 +139,8 @@ Users can ask questions like:
 
 ## License
 
-[License information]
+[MIT]
 
 ## Contributors
 
-[List of contributors]
+[Rajashekar Vennavelli, Sako]
