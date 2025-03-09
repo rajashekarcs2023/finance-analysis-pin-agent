@@ -1,33 +1,26 @@
+from langchain.document_loaders import PyMuPDFLoader
+from langchain.text_splitter import RecursiveCharacterTextSplitter
+import tiktoken
+
 class DocumentLoader:
-    """
-    Utilities for loading financial documents.
-    """
-    
-    def __init__(self):
-        self.supported_formats = ["pdf", "txt", "html"]
+    def __init__(self, file_path: str):
+        self.file_path = file_path
         
-    def load_document(self, file_path):
-        """
-        Load a document from the specified path.
+    @staticmethod
+    def tiktoken_len(text):
+        tokens = tiktoken.encoding_for_model("gpt-4").encode(text)
+        return len(tokens)
         
-        Args:
-            file_path (str): Path to the document
-            
-        Returns:
-            dict: Loaded document data
-        """
-        # TODO: Implement document loading
-        return {"content": "Document content", "metadata": {"source": file_path}}
+    def load_and_split(self):
+        # Load document
+        docs = PyMuPDFLoader(self.file_path).load()
         
-    def load_sec_filing(self, filing_id):
-        """
-        Load an SEC filing by ID.
+        # Create text splitter
+        text_splitter = RecursiveCharacterTextSplitter(
+            chunk_size=300,
+            chunk_overlap=0,
+            length_function=self.tiktoken_len,
+        )
         
-        Args:
-            filing_id (str): The SEC filing ID
-            
-        Returns:
-            dict: Loaded filing data
-        """
-        # TODO: Implement SEC filing loading
-        return {"content": f"Filing {filing_id} content", "metadata": {"id": filing_id}} 
+        # Split documents
+        return text_splitter.split_documents(docs)
